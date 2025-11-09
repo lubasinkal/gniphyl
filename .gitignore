@@ -5,3 +5,7 @@ build/
 config.db
 *.iss
 Output/
+
+# Added by cargo
+
+/target
