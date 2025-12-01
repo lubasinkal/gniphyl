@@ -21,7 +21,7 @@ type PathsConfig struct {
 	Paths []string `json:"paths"`
 }
 
-const appName = "fileOrg"
+const appName = "gniphyl"
 
 const (
 	colorReset   = "\033[0m"

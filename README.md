@@ -23,15 +23,35 @@ ___
 
 ## Installation
 
-### Option 1: Download Precompiled Binaries
+### Option 1: Install with Go (Recommended)
+
+If you have Go installed, this is the easiest method. The binary will automatically be added to your PATH:
+
+```bash
+go install github.com/lubasinkal/gniphyl@latest
+```
+
+**Note:** Make sure `$GOPATH/bin` (or `$HOME/go/bin`) is in your PATH. To add it:
+
+```bash
+# Add to ~/.bashrc, ~/.zshrc, or equivalent
+export PATH=$PATH:$(go env GOPATH)/bin
+
+# On Windows (PowerShell)
+$env:Path += ";$(go env GOPATH)\bin"
+```
+
+After installation, you can run `gniphyl` from anywhere!
+
+### Option 2: Download Precompiled Binaries
 
 Download the precompiled executables from the [Releases](https://github.com/lubasinkal/gniphyl/releases) section:
 
-- **For Windows**: Download `gniphyl.exe`
-- **For macOS**: Download `gniphyl`
-- **For Linux**: Download `gniphyl-linux`
+- **Windows**: `gniphyl-windows-amd64.exe` or `gniphyl-windows-arm64.exe`
+- **macOS**: `gniphyl-macos-amd64` (Intel) or `gniphyl-macos-arm64` (Apple Silicon)
+- **Linux**: `gniphyl-linux-amd64` or `gniphyl-linux-arm64`
 
-### Option 2: Build from Source
+### Option 3: Build from Source
 
 **Prerequisites:**
 - Go 1.18 or higher ([Download Go](https://go.dev/dl/))
@@ -48,10 +68,16 @@ go build -o gniphyl
 
 # Or build for specific platforms
 # Windows:
-go build -o gniphyl.exe
+GOOS=windows GOARCH=amd64 go build -o gniphyl.exe
 
-# macOS/Linux:
-go build -o gniphyl
+# macOS (Intel):
+GOOS=darwin GOARCH=amd64 go build -o gniphyl
+
+# macOS (Apple Silicon):
+GOOS=darwin GOARCH=arm64 go build -o gniphyl
+
+# Linux:
+GOOS=linux GOARCH=amd64 go build -o gniphyl
 ```
 
 ### Adding to PATH
@@ -164,10 +190,11 @@ You can customize these categories by modifying `config.json` in the source and 
 - **Language**: Go (using only standard library)
 - **Dependencies**: None (stdlib only)
 - **Config Storage**: 
-  - Windows: `%LOCALAPPDATA%\fileOrg\config.toml`
-  - macOS/Linux: `~/.config/fileOrg/config.toml`
+  - Windows: `%LOCALAPPDATA%\gniphyl\config.toml`
+  - macOS/Linux: `~/.config/gniphyl/config.toml`
 - **Config Format**: JSON
 - **Binary Size**: ~3MB (standalone, no runtime required)
+- **Supported Platforms**: Windows, macOS (Intel & Apple Silicon), Linux (amd64 & arm64)
 
 ---
 
