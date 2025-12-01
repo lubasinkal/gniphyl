@@ -1,6 +1,8 @@
 # Gniphyl
 
-Gniphyl is a cross-platform command-line interface (CLI) tool that allows users to organize files within specified directories. It enables users to add, delete, list, and organize directories, ensuring that files are neatly sorted based on their type (e.g., `images`, `videos`, `documents`). This tool is available as an executable for **Windows**, **macOS**, and **Linux**.
+Gniphyl is a cross-platform command-line interface (CLI) tool written in **Go** that allows users to organize files within specified directories. It enables users to add, delete, list, and organize directories, ensuring that files are neatly sorted based on their type (e.g., `images`, `videos`, `documents`). 
+
+**Built with Go's standard library only** - no external dependencies required! The tool is fast, lightweight, and produces standalone executables for **Windows**, **macOS**, and **Linux**.
 
 ---
 Running the tool
@@ -21,31 +23,40 @@ ___
 
 ## Installation
 
-### Prerequisites
-- No installation of Python required if using the precompiled executables.
-- For **Windows**, **macOS**, and **Linux**, you can download the respective executables.
-- To build from source, ensure **Python 3.6** or higher is installed.
+### Option 1: Download Precompiled Binaries
 
-### Steps to Install the Executables
+Download the precompiled executables from the [Releases](https://github.com/lubasinkal/gniphyl/releases) section:
 
-1. **Clone the repository** (only required if you plan to build from source):
-   ```bash
-   git clone https://github.com/lubasinkal/gniphyl.git
-   cd gniphyl
-   ```
+- **For Windows**: Download `gniphyl.exe`
+- **For macOS**: Download `gniphyl`
+- **For Linux**: Download `gniphyl-linux`
 
-2. **Install dependencies** (if building from source):
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Option 2: Build from Source
 
-3. **Download the Executables** from the [Releases](https://github.com/lubasinkal/gniphyl/releases) section:
+**Prerequisites:**
+- Go 1.18 or higher ([Download Go](https://go.dev/dl/))
 
-   - **For Windows**: Download `gniphyl.exe`.
-   - **For macOS**: Download `gniphyl`.
-   - **For Linux**: Download `gniphyl-linux`.
+**Build steps:**
 
-4. **Move Executables to a Directory in the PATH**:
+```bash
+# Clone the repository
+git clone https://github.com/lubasinkal/gniphyl.git
+cd gniphyl
+
+# Build for your platform
+go build -o gniphyl
+
+# Or build for specific platforms
+# Windows:
+go build -o gniphyl.exe
+
+# macOS/Linux:
+go build -o gniphyl
+```
+
+### Adding to PATH
+
+To run `gniphyl` from anywhere, add it to your system's PATH:
 
    To make it easier to run the `gniphyl` commands from any terminal session, move the downloaded executable to a directory that is part of your system's `PATH`.
 
@@ -83,63 +94,80 @@ ___
 
 ## Usage
 
-### Run as a CLI Tool
+### Commands
 
-The tool is a command-line utility, which means it is run from the terminal/command prompt. Use the following commands to interact with the tool:
-
-### Add a New Path
 ```bash
+# Show help
+gniphyl --help
+
+# Add a directory path to organize
 gniphyl add <directory_path>
-```
-Adds a directory path to the configuration.
 
-### Delete a Path
-```bash
-gniphyl rm <index>
-```
-Deletes a path by its index number (use `gniphyl list` to see indices).
+# Remove a path from configuration
+gniphyl rm <directory_path>
 
-### List All Paths
-```bash
+# List all configured paths
 gniphyl list
-```
-Lists all paths stored in the configuration.
 
-### Organize Files
-```bash
+# Organize files in all configured paths
 gniphyl run
 ```
-Organizes files in all configured paths into categorized folders (e.g., `images`, `videos`, etc.).
 
 ---
 
-## Example
+## Example Workflow
 
-1. Add a new path:
-   ```bash
-   gniphyl add /users/name/downloads
-   ```
+```bash
+# Add your Downloads folder
+gniphyl add /users/name/downloads
 
-2. List paths:
-   ```bash
-   gniphyl list
-   ```
-   Output:
-   ```
-   Configured paths:
-   1. /users/name/downloads
-   ```
+# List configured paths
+gniphyl list
 
-3. Organize files in the paths:
-   ```bash
-   gniphyl run
-   ```
+# Output:
+# Configured Paths:
+# --------------------------------------------------
+# 1. /users/name/downloads
+# --------------------------------------------------
 
----
+# Organize all files
+gniphyl run
 
-## Releases
+# Files will be sorted into folders:
+# - images/     (jpg, png, gif, etc.)
+# - videos/     (mp4, mkv, avi, etc.)
+# - documents/  (pdf, docx, txt, etc.)
+# - compressed/ (zip, rar, tar, etc.)
+# - audio/      (mp3, wav, flac, etc.)
+# - code/       (html, css, js, py, etc.)
+# - executables/ (exe, msi)
+# - others/     (unrecognized extensions)
+```
 
-The compiled executables for each platform are available in the [Releases](https://github.com/lubasinkal/gniphyl/releases) section. You can download the appropriate file for your operating system.
+## File Categories
+
+The tool organizes files based on their extensions into the following categories:
+
+- **images**: jpg, jpeg, png, gif, bmp, webp
+- **videos**: mp4, mkv, webm, flv, avi, mov
+- **documents**: pdf, doc, docx, xls, xlsx, ppt, pptx, txt, csv
+- **compressed**: zip, rar, tar, gz, 7z
+- **executables**: exe, msi
+- **audio**: mp3, wav, flac, m4a, aac
+- **code**: html, css, js, py, java, c, cpp, h, hpp, php, sql
+- **others**: any other file type
+
+You can customize these categories by modifying `config.json` in the source and rebuilding.
+
+## Technical Details
+
+- **Language**: Go (using only standard library)
+- **Dependencies**: None (stdlib only)
+- **Config Storage**: 
+  - Windows: `%LOCALAPPDATA%\fileOrg\config.toml`
+  - macOS/Linux: `~/.config/fileOrg/config.toml`
+- **Config Format**: JSON
+- **Binary Size**: ~3MB (standalone, no runtime required)
 
 ---
 

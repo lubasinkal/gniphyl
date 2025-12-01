@@ -9,3 +9,8 @@ Output/
 # Added by cargo
 
 /target
+
+# Go build artifacts
+*.exe
+gniphyl
+gniphyl-*
