@@ -1,3 +1,3 @@
-module gniphyl
+module github.com/lubasinkal/gniphyl
 
-go 1.25.4
+go 1.21
