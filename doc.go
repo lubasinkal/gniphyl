@@ -11,7 +11,7 @@
 //
 // # Example
 //
-//	import "github.com/lubasinkal/gniphyl"
+//	import "github.com/lubasinkal/gniphyl/v3"
 //
 //	func main() {
 //	    err := gniphyl.Organize("/path/to/directory")

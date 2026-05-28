@@ -1,6 +1,6 @@
 # Gniphyl
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/lubasinkal/gniphyl.svg)](https://pkg.go.dev/github.com/lubasinkal/gniphyl)
+[![Go Reference](https://pkg.go.dev/badge/github.com/lubasinkal/gniphyl/v3.svg)](https://pkg.go.dev/github.com/lubasinkal/gniphyl/v3)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lubasinkal/gniphyl)](https://goreportcard.com/report/github.com/lubasinkal/gniphyl)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -31,7 +31,7 @@ Output after **gniphyl run**
 ### Install with Go (recommended)
 
 ```bash
-go install github.com/lubasinkal/gniphyl/cmd/gniphyl@latest
+go install github.com/lubasinkal/gniphyl/v3/cmd/gniphyl@latest
 ```
 
 Ensure `$GOPATH/bin` (or `$HOME/go/bin`) is on your PATH.
@@ -61,11 +61,11 @@ GOOS=linux   GOARCH=amd64 go build -o gniphyl      ./cmd/gniphyl/
 ### Use as a Go package
 
 ```bash
-go get github.com/lubasinkal/gniphyl
+go get github.com/lubasinkal/gniphyl/v3
 ```
 
 ```go
-import "github.com/lubasinkal/gniphyl"
+import "github.com/lubasinkal/gniphyl/v3"
 
 func main() {
     err := gniphyl.Organize("/path/to/directory")
@@ -185,7 +185,7 @@ Per-user path configuration is stored at:
 | Attribute | Value |
 |---|---|
 | Language | Go (stdlib only) |
-| Module | `github.com/lubasinkal/gniphyl` |
+| Module | `github.com/lubasinkal/gniphyl/v3` |
 | Dependencies | None |
 | Go version | 1.21+ |
 | Binary size | ~3MB |

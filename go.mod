@@ -1,4 +1,4 @@
-module github.com/lubasinkal/gniphyl
+module github.com/lubasinkal/gniphyl/v3
 
 go 1.21
 
@@ -13,10 +13,10 @@ go 1.21
 //   - CLI and Go package usage
 //
 // Example usage:
-//   go install github.com/lubasinkal/gniphyl/cmd/gniphyl@latest
+//   go install github.com/lubasinkal/gniphyl/v3/cmd/gniphyl@latest
 //   gniphyl add /path/to/directory
 //   gniphyl run
 //
 // As a Go package:
-//   import "github.com/lubasinkal/gniphyl"
+//   import "github.com/lubasinkal/gniphyl/v3"
 //   err := gniphyl.Organize("/path/to/directory")

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/lubasinkal/gniphyl"
+	"github.com/lubasinkal/gniphyl/v3"
 )
 
 func main() {
