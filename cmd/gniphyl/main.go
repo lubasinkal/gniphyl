@@ -106,7 +106,7 @@ You can add paths, list them, and perform other operations.
   gniphyl run /path/to/folder
 `,
 		magenta("Gniphyl CLI - File organization tool"),
-		yellow("Made by lubasinkal ;) https://lubasiverse.pages.dev"),
+		yellow("Made by lubasinkal ;) https://lubasiverse.com"),
 		cyan("Usage:"),
 		cyan("Commands:"),
 		cyan("Examples:"),
