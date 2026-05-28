@@ -18,5 +18,5 @@ go 1.21
 //   gniphyl run
 //
 // As a Go package:
-//   import "github.com/lubasinkal/gniphyl/pkg/gniphyl"
+//   import "github.com/lubasinkal/gniphyl"
 //   err := gniphyl.Organize("/path/to/directory")

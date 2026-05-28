@@ -1,3 +1,20 @@
+# Go build artifacts
+*.exe
+/gniphyl
+gniphyl-*
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python (historical)
 __pycache__/
 dist/
 build/
@@ -6,11 +23,5 @@ config.db
 *.iss
 Output/
 
-# Added by cargo
-
+# Rust (historical)
 /target
-
-# Go build artifacts
-*.exe
-gniphyl
-gniphyl-*

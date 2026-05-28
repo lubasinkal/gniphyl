@@ -64,11 +64,47 @@ func getConfigFilePath() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(configFolder, "config.toml"), nil
+	return filepath.Join(configFolder, "config.json"), nil
+}
+
+// migrateOldConfig migrates from the old config.toml to config.json
+func migrateOldConfig() error {
+	configFolder, err := getConfigFolder()
+	if err != nil {
+		return err
+	}
+	oldPath := filepath.Join(configFolder, "config.toml")
+	newPath := filepath.Join(configFolder, "config.json")
+
+	if _, err := os.Stat(oldPath); os.IsNotExist(err) {
+		return nil // no old config to migrate
+	}
+
+	// Check if new config already exists — don't overwrite
+	if _, err := os.Stat(newPath); err == nil {
+		// Both exist; remove old one
+		return os.Remove(oldPath)
+	}
+
+	// Read old, write new, remove old
+	data, err := os.ReadFile(oldPath)
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(newPath, data, 0644); err != nil {
+		return err
+	}
+	return os.Remove(oldPath)
 }
 
 // LoadPathsConfig loads the user's configured paths from the configuration file
 func LoadPathsConfig() (*PathsConfig, error) {
+	// Migrate from old config.toml if present
+	if err := migrateOldConfig(); err != nil {
+		// Log but don't fail — the new path might still work
+		fmt.Fprintf(os.Stderr, "warning: config migration failed: %v\n", err)
+	}
+
 	configFile, err := getConfigFilePath()
 	if err != nil {
 		return nil, err
@@ -122,6 +158,23 @@ func LoadExtensionsConfig() (*Config, error) {
 	return config, nil
 }
 
+// FileResult records the outcome of organizing a single file.
+type FileResult struct {
+	Name     string `json:"name"`
+	Category string `json:"category"`
+	Error    error  `json:"-"`
+}
+
+// Error implements the error interface for aggregate errors.
+type OrganizeError struct {
+	Path     string       `json:"path"`
+	Failures []FileResult `json:"failures"`
+}
+
+func (e *OrganizeError) Error() string {
+	return fmt.Sprintf("organized %s with %d failure(s)", e.Path, len(e.Failures))
+}
+
 // Organize organizes files in the specified directory into categorized folders
 // based on their file extensions. This is the main function that can be used
 // programmatically by other Go applications.
@@ -140,7 +193,7 @@ func Organize(path string) error {
 		return err
 	}
 
-	fileCount := 0
+	var failures []FileResult
 	for _, entry := range entries {
 		if entry.IsDir() {
 			continue
@@ -164,6 +217,7 @@ func Organize(path string) error {
 
 		folderPath := filepath.Join(path, category)
 		if err := os.MkdirAll(folderPath, 0755); err != nil {
+			failures = append(failures, FileResult{Name: entry.Name(), Category: category, Error: err})
 			continue
 		}
 
@@ -181,10 +235,13 @@ func Organize(path string) error {
 		}
 
 		if err := os.Rename(itemPath, destPath); err != nil {
+			failures = append(failures, FileResult{Name: entry.Name(), Category: category, Error: err})
 			continue
 		}
+	}
 
-		fileCount++
+	if len(failures) > 0 {
+		return &OrganizeError{Path: path, Failures: failures}
 	}
 
 	return nil

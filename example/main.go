@@ -24,7 +24,7 @@ func main() {
 
 	// Get extensions for a specific category
 
-exts, err := gniphyl.GetExtensionsForCategory("images", config)
+	exts, err := gniphyl.GetExtensionsForCategory("images", config)
 	if err != nil {
 		log.Fatal(err)
 	}

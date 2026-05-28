@@ -156,6 +156,9 @@ To run `gniphyl` from anywhere, add it to your system's PATH:
 # Show help
 gniphyl --help
 
+# Show version
+gniphyl --version
+
 # Add a directory path to organize
 gniphyl add <directory_path>
 
@@ -167,6 +170,9 @@ gniphyl list
 
 # Organize files in all configured paths
 gniphyl run
+
+# Organize a specific directory directly (no config needed)
+gniphyl run /path/to/directory
 ```
 
 ### Go Package Usage
@@ -216,8 +222,11 @@ gniphyl list
 # 1. /users/name/downloads
 # --------------------------------------------------
 
-# Organize all files
+# Organize all configured paths
 gniphyl run
+
+# Or organize a directory directly (without adding it to config)
+gniphyl run /path/to/downloads
 
 # Files will be sorted into folders:
 # - images/     (jpg, png, gif, etc.)
@@ -374,9 +383,10 @@ You can customize these categories by modifying `config.json` in the source and 
 - **Module Path**: `github.com/lubasinkal/gniphyl`
 - **Dependencies**: None (stdlib only)
 - **Config Storage**: 
-  - Windows: `%LOCALAPPDATA%\gniphyl\config.toml`
-  - macOS/Linux: `~/.config/gniphyl/config.toml`
+  - Windows: `%LOCALAPPDATA%\gniphyl\config.json`
+  - macOS/Linux: `~/.config/gniphyl/config.json`
 - **Config Format**: JSON
+  - *Migrated automatically from legacy `config.toml` on first run*
 - **Binary Size**: ~3MB (standalone, no runtime required)
 - **Supported Platforms**: Windows, macOS (Intel & Apple Silicon), Linux (amd64 & arm64)
 - **Go Version**: 1.21+

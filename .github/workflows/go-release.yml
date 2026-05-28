@@ -4,15 +4,53 @@ on:
   push:
     tags:
       - 'v*'  # Trigger on version tags (e.g., v1.0.0)
+    branches:
+      - main  # Also run on main branch pushes
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:  # Allow manual triggering
 
 permissions:
   contents: write  # Required for creating releases
 
 jobs:
-  build:
-    name: Build and Release
+  lint-and-test:
+    name: Lint and Test
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          check-latest: true
+
+      - name: Check formatting
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "Unformatted files:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Run tests
+        run: go test -v -count=1 -race -shuffle=on ./... 2>&1 | tee test-output.log
+
+      - name: Build check
+        run: go build ./...
+
+  build-and-release:
+    name: Build and Release
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     
     strategy:
       matrix:
@@ -49,6 +87,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.21'
+          check-latest: true
 
       - name: Build binary
         env:
@@ -56,7 +95,7 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
           CGO_ENABLED: 0
         run: |
-          go build -ldflags="-s -w" -o ${{ matrix.output }} ./cmd/gniphyl/
+          go build -ldflags="-s -w -X main.version=${{ github.ref_name }} -X main.commit=${{ github.sha }} -X main.date=$(date -u '+%Y-%m-%d')" -o ${{ matrix.output }} ./cmd/gniphyl/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -66,7 +105,7 @@ jobs:
 
   release:
     name: Create Release
-    needs: build
+    needs: build-and-release
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     
