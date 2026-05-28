@@ -31,7 +31,7 @@ Output after **gniphyl run**
 ### Install with Go (recommended)
 
 ```bash
-go install github.com/lubasinkal/gniphyl@latest
+go install github.com/lubasinkal/gniphyl/cmd/gniphyl@latest
 ```
 
 Ensure `$GOPATH/bin` (or `$HOME/go/bin`) is on your PATH.

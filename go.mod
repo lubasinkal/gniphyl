@@ -13,7 +13,7 @@ go 1.21
 //   - CLI and Go package usage
 //
 // Example usage:
-//   go install github.com/lubasinkal/gniphyl@latest
+//   go install github.com/lubasinkal/gniphyl/cmd/gniphyl@latest
 //   gniphyl add /path/to/directory
 //   gniphyl run
 //
