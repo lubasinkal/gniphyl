@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 
 	"github.com/lubasinkal/gniphyl"
@@ -112,11 +113,11 @@ You can add paths, list them, and perform other operations.
 	)
 }
 
-func printError(format string, args ...interface{}) {
+func printError(format string, args ...any) {
 	fmt.Fprintf(os.Stderr, "%s %s\n", red("Error:"), fmt.Sprintf(format, args...))
 }
 
-func printWarning(format string, args ...interface{}) {
+func printWarning(format string, args ...any) {
 	fmt.Fprintf(os.Stderr, "%s %s\n", yellow("Warning:"), fmt.Sprintf(format, args...))
 }
 
@@ -135,11 +136,9 @@ func cmdAdd(args []string) {
 		return
 	}
 
-	for _, p := range config.Paths {
-		if p == path {
-			printWarning("Path %s is already in the configuration.", path)
-			return
-		}
+	if slices.Contains(config.Paths, path) {
+		printWarning("Path %s is already in the configuration.", path)
+		return
 	}
 
 	config.Paths = append(config.Paths, path)
@@ -167,22 +166,13 @@ func cmdRm(args []string) {
 		return
 	}
 
-	found := false
-	newPaths := []string{}
-	for _, p := range config.Paths {
-		if p != path {
-			newPaths = append(newPaths, p)
-		} else {
-			found = true
-		}
-	}
-
-	if !found {
+	i := slices.Index(config.Paths, path)
+	if i < 0 {
 		printWarning("Path %s not found in the configuration.", path)
 		return
 	}
 
-	config.Paths = newPaths
+	config.Paths = slices.Delete(config.Paths, i, i+1)
 
 	if err := gniphyl.SavePathsConfig(config); err != nil {
 		printError("Failed to save config: %v", err)

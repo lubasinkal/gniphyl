@@ -3,6 +3,7 @@ package gniphyl
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 )
 
@@ -30,13 +31,7 @@ func TestLoadExtensionsConfig(t *testing.T) {
 		t.Error("images category has no extensions")
 	}
 
-	foundJpg := false
-	for _, ext := range imageExts {
-		if ext == "jpg" {
-			foundJpg = true
-			break
-		}
-	}
+	foundJpg := slices.Contains(imageExts, "jpg")
 	if !foundJpg {
 		t.Error("images category should contain 'jpg'")
 	}

@@ -375,7 +375,7 @@ The tool organizes files based on their extensions into the following categories
 - **code**: html, css, js, py, java, c, cpp, h, hpp, php, sql
 - **others**: any other file type
 
-You can customize these categories by modifying `config.json` in the source and rebuilding.
+You can customize these categories by modifying `extensions.json` in the source and rebuilding.
 
 ## Technical Details
 
